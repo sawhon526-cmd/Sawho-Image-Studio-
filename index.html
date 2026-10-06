@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="Sawho Image Studio is a fast and mobile-friendly online image toolkit for merging, resizing, cropping, enhancing, compressing and converting images.">
+<title>Sawho Image Studio</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:linear-gradient(135deg,#070b18,#111936);
+ color:#fff;
+ font-family:Arial,"Noto Sans Bengali",sans-serif;
+ min-height:100vh
+}
+header{
+ text-align:center;
+ padding:30px 15px 20px
+}
+.logo{
+ font-size:clamp(30px,8vw,48px);
+ font-weight:900
+}
+.logo span{color:#8068ff}
+.subtitle{
+ color:#aab4cc;
+ max-width:700px;
+ margin:10px auto;
+ line-height:1.6
+}
+.container{
+ max-width:1150px;
+ margin:auto;
+ padding:10px 14px 50px
+}
+.tabs{
+ display:flex;
+ gap:8px;
+ overflow-x:auto;
+ padding:8px 0 15px
+}
+.tab{
+ border:1px solid #29365a;
+ background:#111a31;
+ color:#aeb8d0;
+ padding:12px 16px;
+ border-radius:12px;
+ white-space:nowrap;
+ cursor:pointer
+}
+.tab.active{
+ background:#7058ff;
+ color:#fff;
+ border-color:#7058ff;
+ font-weight:bold
+}
+.tool{
+ display:none;
+ background:#0d152b;
+ border:1px solid #29365a;
+ border-radius:22px;
+ padding:18px;
+ box-shadow:0 20px 60px #0006
+}
+.tool.active{display:block}
+.grid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:16px
+}
+@media(max-width:750px){
+ .grid{grid-template-columns:1fr}
+}
+.card{
+ background:#111b34;
+ border:1px solid #29365a;
+ border-radius:17px;
+ padding:17px
+}
+h2{margin:0 0 8px}
+p{color:#aab4cc;line-height:1.6}
+label{
+ display:block;
+ color:#cbd4e8;
+ font-size:14px;
+ margin:12px 0 6px
+}
+input,select{
+ width:100%;
+ padding:12px;
+ border-radius:11px;
+ border:1px solid #29365a;
+ background:#080e1e;
+ color:#fff;
+ outline:none
+}
+input:focus,select:focus{border-color:#8068ff}
+input[type=color]{height:45px;padding:4px}
+input[type=range]{padding:0}
+.buttons{
+ display:flex;
+ gap:9px;
+ flex-wrap:wrap;
+ margin-top:14px
+}
+button{
+ border:0;
+ border-radius:11px;
+ padding:12px 16px;
+ cursor:pointer;
+ font-weight:bold
+}
+.primary{
+ background:#7058ff;
+ color:white
+}
+.green{
+ background:#0ab88e;
+ color:white
+}
+.gray{
+ background:#1d2a48;
+ color:white
+}
+button:disabled{
+ opacity:.45;
+ cursor:not-allowed
+}
+.preview{
+ min-height:300px;
+ border:1px dashed #405075;
+ border-radius:15px;
+ background:#080d1b;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ overflow:hidden;
+ padding:10px
+}
+.preview canvas,.preview img{
+ max-width:100%;
+ max-height:520px
+}
+.empty{
+ color:#66738e;
+ text-align:center;
+ padding:40px 10px
+}
+.status{
+ color:#aeb9ce;
+ font-size:13px;
+ margin-top:10px;
+ min-height:20px
+}
+.badge{
+ display:inline-block;
+ padding:5px 9px;
+ background:#1b2645;
+ color:#bcb1ff;
+ border-radius:50px;
+ font-size:11px;
+ font-weight:bold;
+ margin-bottom:9px
+}
+.features{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px;
+ margin-bottom:15px
+}
+.feature{
+ background:#101a32;
+ border:1px solid #29365a;
+ padding:14px;
+ border-radius:15px;
+ text-align:center
+}
+.feature b{display:block}
+.feature small{color:#8995af}
+@media(max-width:600px){
+ .features{grid-template-columns:1fr}
+}
+footer{
+ text-align:center;
+ color:#66738e;
+ padding:25px;
+ font-size:12px
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="logo">Sawho <span>Image Studio</span></div>
+ <p class="subtitle">
+  Powerful and simple image tools for everyone.
+  Merge, resize, crop, enhance, add text, compress and convert images.
+ </p>
+</header>
+
+<div class="container">
+
+<div class="features">
+ <div class="feature">
+  <b>⚡ Fast</b>
+  <small>Quick image processing</small>
+ </div>
+ <div class="feature">
+  <b>📱 Mobile Friendly</b>
+  <small>Works on phones and computers</small>
+ </div>
+ <div class="feature">
+  <b>🔒 Private</b>
+  <small>Images are processed in browser</small>
+ </div>
+</div>
+
+<div class="tabs">
+ <button class="tab active" data-tool="merge">🖼️ Merge</button>
+ <button class="tab" data-tool="resize">📐 Resize</button>
+ <button class="tab" data-tool="crop">✂️ Crop</button>
+ <button class="tab" data-tool="enhance">✨ Enhance</button>
+ <button class="tab" data-tool="text">📝 Text</button>
+ <button class="tab" data-tool="compress">🗜️ Compress</button>
+ <button class="tab" data-tool="convert">🔄 Convert</button>
+</div>
+
+
+<!-- MERGE -->
+<section class="tool active" id="merge">
+<div class="grid">
+
+<div class="card">
+<span class="badge">IMAGE MERGER</span>
+<h2>Merge Two Images</h2>
+<p>Combine two images into one image.</p>
+
+<label>Image 1</label>
+<input type="file" id="m1" accept="image/*">
+
+<label>Image 2</label>
+<input type="file" id="m2" accept="image/*">
+
+<label>Layout</label>
+<select id="layout">
+<option value="side">Side by Side</option>
+<option value="stack">Top & Bottom</option>
+<option value="overlay">Overlay</option>
+</select>
+
+<label>Gap</label>
+<input type="number" id="gap" value="10" min="0">
+
+<div class="buttons">
+<button class="primary" id="mergeBtn">Merge Images</button>
+<button class="gray" onclick="location.reload()">Clear</button>
+</div>
+
+<div class="status" id="mergeStatus"></div>
+</div>
+
+<div class="card">
+<h3>Preview</h3>
+<div class="preview" id="mergePreview">
+<div class="empty">Your merged image will appear here.</div>
+</div>
+
+<div class="buttons">
+<button class="green" id="mergeDownload" disabled>Download PNG</button>
+</div>
+</div>
+
+</div>
+</section>
+
+
+<!-- RESIZE -->
+<section class="tool" id="resize">
+<div class="grid">
+
+<div class="card">
+<span class="badge">RESIZE</span>
+<h2>Resize Image</h2>
+
+<input type="file" id="rFile" accept="image/*">
+
+<label>Width</label>
+<input type="number" id="rW">
+
+<label>Height</label>
+<input type="number" id="rH">
+
+<label>
+<input type="checkbox" id="ratio" checked style="width:auto">
+ Keep Aspect Ratio
+</label>
+
+<label>Quality</label>
+<input type="range" id="rQuality" min=".1" max="1" step=".01" value=".92">
+
+<div class="buttons">
+<button class="primary" id="resizeBtn">Resize</button>
+<button class="green" id="resizeDownload" disabled>Download</button>
+</div>
+
+<div class="status" id="resizeStatus"></div>
+</div>
+
+<div class="card">
+<div class="preview" id="resizePreview">
+<div class="empty">Select an image.</div>
+</div>
+</div>
+
+</div>
+</section>
+
+
+<!-- CROP -->
+<section class="tool" id="crop">
+<div class="grid">
+
+<div class="card">
+<span class="badge">CROP</span>
+<h2>Crop Image</h2>
+
+<input type="file" id="cFile" accept="image/*">
+
+<label>X</label>
+<input type="number" id="cx" value="0">
+
+<label>Y</label>
+<input type="number" id="cy" value="0">
+
+<label>Width</label>
+<input type="number" id="cw" value="100">
+
+<label>Height</label>
+<input type="number" id="ch" value="100">
+
+<div class="buttons">
+<button class="primary" id="cropBtn">Crop Image</button>
+<button class="green" id="cropDownload" disabled>Download</button>
+</div>
+
+<div class="status" id="cropStatus"></div>
+</div>
+
+<div class="card">
+<div class="preview" id="cropPreview">
+<div class="empty">Select an image.</div>
+</div>
+</div>
+
+</div>
+</section>
+
+
+<!-- ENHANCE -->
+<section class="tool" id="enhance">
+<div class="grid">
+
+<div class="card">
+<span class="badge">ENHANCE</span>
+<h2>Improve Image</h2>
+<p>Adjust brightness, contrast and sharpness.</p>
+
+<input type="file" id="eFile" accept="image/*">
+
+<label>Brightness</label>
+<input type="range" id="brightness" min="-60" max="60" value="0">
+
+<label>Contrast</label>
+<input type="range" id="contrast" min=".5" max="1.8" step=".05" value="1">
+
+<label>Sharpness</label>
+<input type="range" id="sharpness" min="0" max="2" step=".1" value="1">
+
+<div class="buttons">
+<button class="primary" id="enhanceBtn">Enhance</button>
+<button class="green" id="enhanceDownload" disabled>Download</button>
+</div>
+
+<div class="status" id="enhanceStatus"></div>
+</div>
+
+<div class="card">
+<div class="preview" id="enhancePreview">
+<div class="empty">Select an image.</div>
+</div>
+</div>
+
+</div>
+</section>
+
+
+<!-- TEXT -->
+<section class="tool" id="text">
+<div class="grid">
+
+<div class="card">
+<span class="badge">TEXT ON IMAGE</span>
+<h2>Add Text</h2>
+
+<input type="file" id="tFile" accept="image/*">
+
+<label>Text</label>
+<input type="text" id="tText" placeholder="Write your text">
+
+<label>Font Size</label>
+<input type="number" id="tSize" value="60">
+
+<label>Text Color</label>
+<input type="color" id="tColor" value="#ffffff">
+
+<label>X Position</label>
+<input type="number" id="tx" value="30">
+
+<label>Y Position</label>
+<input type="number" id="ty" value="80">
+
+<label>
+<input type="checkbox" id="outline" checked style="width:auto">
+ Dark Outline
+</label>
+
+<div class="buttons">
+<button class="primary" id="textBtn">Add Text</button>
+<button class="green" id="textDownload" disabled>Download PNG</button>
+</div>
+
+<div class="status" id="textStatus"></div>
+</div>
+
+<div class="card">
+<div class="preview" id="textPreview">
+<div class="empty">Select an image.</div>
+</div>
+</div>
+
+</div>
+</section>
+
+
+<!-- COMPRESS -->
+<section class="tool" id="compress">
+<div class="grid">
+
+<div class="card">
+<span class="badge">COMPRESS</span>
+<h2>Compress Image</h2>
+
+<input type="file" id="pFile" accept="image/*">
+
+<label>Quality</label>
+<input type="range" id="quality" min=".1" max="1" step=".01" value=".75">
+
+<label>Format</label>
+<select id="pFormat">
+<option value="image/jpeg">JPG</option>
+<option value="image/webp">WebP</option>
+<option value="image/png">PNG</option>
+</select>
+
+<div class="buttons">
+<button class="primary" id="compressBtn">Compress</button>
+<button class="green" id="compressDownload" disabled>Download</button>
+</div>
+
+<div class="status" id="compressStatus"></div>
+</div>
+
+<div class="card">
+<div class="preview" id="compressPreview">
+<div class="empty">Select an image.</div>
+</div>
+</div>
+
+</div>
+</section>
+
+
+<!-- CONVERT -->
+<section class="tool" id="convert">
+<div class="grid">
+
+<div class="card">
+<span class="badge">FORMAT CONVERTER</span>
+<h2>Convert Image</h2>
+
+<input type="file" id="vFile" accept="image/*">
+
+<label>Output Format</label>
+<select id="vFormat">
+<option value="image/png">PNG</option>
+<option value="image/jpeg">JPG</option>
+<option value="image/webp">WebP</option>
+</select>
+
+<label>Quality</label>
+<input type="range" id="vQuality" min=".1" max="1" step=".01" value=".92">
+
+<div class="buttons">
+<button class="primary" id="convertBtn">Convert</button>
+<button class="green" id="convertDownload" disabled>Download</button>
+</div>
+
+<div class="status" id="convertStatus"></div>
+</div>
+
+<div class="card">
+<div class="preview" id="convertPreview">
+<div class="empty">Select an image.</div>
+</div>
+</div>
+
+</div>
+</section>
+
+</div>
+
+<footer>
+Sawho Image Studio • Free browser-based image tools
+</footer>
+
+
+<script>
+
+const $=id=>document.getElementById(id);
+const files={};
+const outputs={};
+
+function loadImage(file){
+ return new Promise((resolve,reject)=>{
+  if(!file)return reject(new Error("Please select an image."));
+  const url=URL.createObjectURL(file);
+  const img=new Image();
+
+  img.onload=()=>{
+   URL.revokeObjectURL(url);
+   resolve(img);
+  };
+
+  img.onerror=()=>{
+   URL.revokeObjectURL(url);
+   reject(new Error("Could not read image."));
+  };
+
+  img.src=url;
+ });
+}
+
+function makeBlob(canvas,type="image/png",quality=.92){
+ return new Promise(resolve=>{
+  canvas.toBlob(resolve,type,quality);
+ });
+}
+
+function show(id,canvas){
+ $(id).innerHTML="";
+ $(id).appendChild(canvas);
+}
+
+function save(key,blob,name){
+ outputs[key]={blob:blob,name:name};
+ $(key+"Download").disabled=false;
+}
+
+function download(key){
+ const item=outputs[key];
+ if(!item)return;
+
+ const url=URL.createObjectURL(item.blob);
+ const a=document.createElement("a");
+
+ a.href=url;
+ a.download=item.name;
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+
+ setTimeout(()=>{
+  URL.revokeObjectURL(url);
+ },1000);
+}
+
+
+/* TABS */
+
+document.querySelectorAll(".tab").forEach(btn=>{
+ btn.onclick=()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".tool").forEach(x=>x.classList.remove("active"));
+
+  btn.classList.add("active");
+  $(btn.dataset.tool).classList.add("active");
+ };
+});
+
+
+/* MERGE */
+
+$("m1").onchange=e=>files.m1=e.target.files[0];
+$("m2").onchange=e=>files.m2=e.target.files[0];
+
+$("mergeBtn").onclick=async()=>{
+ try{
+
+  const [a,b]=await Promise.all([
+   loadImage(files.m1),
+   loadImage(files.m2)
+  ]);
+
+  const layout=$("layout").value;
+  const gap=Math.max(0,+$("gap").value||0);
+
+  let w,h;
+
+  if(layout==="side"){
+   w=a.naturalWidth+b.naturalWidth+gap;
+   h=Math.max(a.naturalHeight,b.naturalHeight);
+  }
+  else if(layout==="stack"){
+   w=Math.max(a.naturalWidth,b.naturalWidth);
+   h=a.naturalHeight+b.naturalHeight+gap;
+  }
+  else{
+   w=Math.max(a.naturalWidth,b.naturalWidth);
+   h=Math.max(a.naturalHeight,b.naturalHeight);
+  }
+
+  const canvas=document.createElement("canvas");
+  canvas.width=w;
+  canvas.height=h;
+
+  const ctx=canvas.getContext("2d");
+
+  ctx.fillStyle="#ffffff";
+  ctx.fillRect(0,0,w,h);
+
+  if(layout==="side"){
+   ctx.drawImage(a,0,0);
+   ctx.drawImage(b,a.naturalWidth+gap,0);
+  }
+  else if(layout==="stack"){
+   ctx.drawImage(a,0,0);
+   ctx.drawImage(b,0,a.naturalHeight+gap);
+  }
+  else{
+   ctx.globalAlpha=.5;
+   ctx.drawImage(a,0,0);
+   ctx.drawImage(b,0,0);
+   ctx.globalAlpha=1;
+  }
+
+  show("mergePreview",canvas);
+
+  save(
+   "merge",
+   await makeBlob(canvas),
+   "sawho-merged.png"
+  );
+
+  $("mergeStatus").textContent="Images merged successfully.";
+
+ }
+ catch(e){
+  $("mergeStatus").textContent=e.message;
+ }
+};
+
+$("mergeDownload").onclick=()=>download("merge");
+
+
+/* RESIZE */
+
+$("rFile").onchange=async e=>{
+ try{
+  files.r=e.target.files[0];
+
+  const img=await loadImage(files.r);
+
+  $("rW").value=img.naturalWidth;
+  $("rH").value=img.naturalHeight;
+
+ }catch(e){
+  $("resizeStatus").textContent=e.message;
+ }
+};
+
+$("rW").oninput=async()=>{
+ if($("ratio").checked&&files.r){
+
+  const img=await loadImage(files.r);
+
+  $("rH").value=Math.round(
+   $("rW").value*
+   img.naturalHeight/
+   img.naturalWidth
+  );
+ }
+};
+
+$("rH").oninput=async()=>{
+ if($("ratio").checked&&files.r){
+
+  const img=await loadImage(files.r);
+
+  $("rW").value=Math.round(
+   $("rH").value*
+   img.naturalWidth/
+   img.naturalHeight
+  );
+ }
+};
+
+$("resizeBtn").onclick=async()=>{
+ try{
+
+  const img=await loadImage(files.r);
+
+  const w=Math.max(1,+$("rW").value);
+  const h=Math.max(1,+$("rH").value);
+
+  const canvas=document.createElement("canvas");
+
+  canvas.width=w;
+  canvas.height=h;
+
+  canvas.getContext("2d").drawImage(
+   img,0,0,w,h
+  );
+
+  show("resizePreview",canvas);
+
+  save(
+   "resize",
+   await makeBlob(canvas,"image/jpeg",+$("rQuality").value),
+   "sawho-resized.jpg"
+  );
+
+  $("resizeStatus").textContent=
+   `Done: ${w} × ${h}px`;
+
+ }
+ catch(e){
+  $("resizeStatus").textContent=e.message;
+ }
+};
+
+$("resizeDownload").onclick=()=>download("resize");
+
+
+/* CROP */
+
+$("cFile").onchange=async e=>{
+ try{
+
+  files.c=e.target.files[0];
+
+  const img=await loadImage(files.c);
+
+  $("cw").value=img.naturalWidth;
+  $("ch").value=img.naturalHeight;
+
+ }
+ catch(e){
+  $("cropStatus").textContent=e.message;
+ }
+};
+
+$("cropBtn").onclick=async()=>{
+ try{
+
+  const img=await loadImage(files.c);
+
+  const x=Math.max(0,+$("cx").value);
+  const y=Math.max(0,+$("cy").value);
+  const w=Math.max(1,+$("cw").value);
+  const h=Math.max(1,+$("ch").value);
+
+  if(x+w>img.naturalWidth ||
+     y+h>img.naturalHeight){
+
+   throw new Error("Crop area is outside the image.");
+  }
+
+  const canvas=document.createElement("canvas");
+
+  canvas.width=w;
+  canvas.height=h;
+
+  canvas.getContext("2d").drawImage(
+   img,x,y,w,h,0,0,w,h
+  );
+
+  show("cropPreview",canvas);
+
+  save(
+   "crop",
+   await makeBlob(canvas),
+   "sawho-crop.png"
+  );
+
+  $("cropStatus").textContent="Image cropped successfully.";
+
+ }
+ catch(e){
+  $("cropStatus").textContent=e.message;
+ }
+};
+
+$("cropDownload").onclick=()=>download("crop");
+
+
+/* ENHANCE */
+
+$("eFile").onchange=e=>files.e=e.target.files[0];
+
+$("enhanceBtn").onclick=async()=>{
+ try{
+
+  const img=await loadImage(files.e);
+
+  const canvas=document.createElement("canvas");
+
+  canvas.width=img.naturalWidth;
+  canvas.height=img.naturalHeight;
+
+  const ctx=canvas.getContext("2d");
+
+  const brightness=+$("brightness").value;
+  const contrast=+$("contrast").value;
+
+  ctx.filter=
+   `brightness(${100+brightness}%) contrast(${contrast*100}%)`;
+
+  ctx.drawImage(img,0,0);
+
+  show("enhancePreview",canvas);
+
+  save(
+   "enhance",
+   await makeBlob(canvas),
+   "sawho-enhanced.png"
+  );
+
+  $("enhanceStatus").textContent=
+   "Image enhanced successfully.";
+
+ }
+ catch(e){
+  $("enhanceStatus").textContent=e.message;
+ }
+};
+
+$("enhanceDownload").onclick=()=>download("enhance");
+
+
+/* TEXT */
+
+$("tFile").onchange=e=>files.t=e.target.files[0];
+
+$("textBtn").onclick=async()=>{
+ try{
+
+  const img=await loadImage(files.t);
+
+  const text=$("tText").value.trim();
+
+  if(!text)
+   throw new Error("Please write some text.");
+
+  const canvas=document.createElement("canvas");
+
+  canvas.width=img.naturalWidth;
+  canvas.height=img.naturalHeight;
+
+  const ctx=canvas.getContext("2d");
+
+  ctx.drawImage(img,0,0);
+
+  const size=Math.max(8,+$("tSize").value);
+
+  ctx.font=
+   `bold ${size}px Arial,"Noto Sans Bengali","Noto Sans",sans-serif`;
+
+  ctx.textBaseline="top";
+
+  const x=+$("tx").value;
+  const y=+$("ty").value;
+
+  if($("outline").checked){
+
+   ctx.lineWidth=Math.max(2,size/10);
+   ctx.strokeStyle="rgba(0,0,0,.85)";
+   ctx.strokeText(text,x,y);
+  }
+
+  ctx.fillStyle=$("tColor").value;
+  ctx.fillText(text,x,y);
+
+  show("textPreview",canvas);
+
+  save(
+   "text",
+   await makeBlob(canvas),
+   "sawho-text.png"
+  );
+
+  $("textStatus").textContent="Text added successfully.";
+
+ }
+ catch(e){
+  $("textStatus").textContent=e.message;
+ }
+};
+
+$("textDownload").onclick=()=>download("text");
+
+
+/* COMPRESS */
+
+$("pFile").onchange=e=>files.p=e.target.files[0];
+
+$("compressBtn").onclick=async()=>{
+ try{
+
+  const img=await loadImage(files.p);
+
+  const canvas=document.createElement("canvas");
+
+  canvas.width=img.naturalWidth;
+  canvas.height=img.naturalHeight;
+
+  canvas.getContext("2d").drawImage(img,0,0);
+
+  const type=$("pFormat").value;
+  const quality=+$("quality").value;
+
+  const b=await makeBlob(
+   canvas,type,quality
+  );
+
+  show("compressPreview",canvas);
+
+  let ext="jpg";
+
+  if(type==="image/png")ext="png";
+  if(type==="image/webp")ext="webp";
+
+  save(
+   "compress",
+   b,
+   `sawho-compressed.${ext}`
+  );
+
+  $("compressStatus").textContent=
+   `Original: ${(files.p.size/1024).toFixed(1)} KB | Output: ${(b.size/1024).toFixed(1)} KB`;
+
+ }
+ catch(e){
+  $("compressStatus").textContent=e.message;
+ }
+};
+
+$("compressDownload").onclick=()=>download("compress");
+
+
+/* CONVERT */
+
+$("vFile").onchange=e=>files.v=e.target.files[0];
+
+$("convertBtn").onclick=async()=>{
+ try{
+
+  const img=await loadImage(files.v);
+
+  const canvas=document.createElement("canvas");
+
+  canvas.width=img.naturalWidth;
+  canvas.height=img.naturalHeight;
+
+  canvas.getContext("2d").drawImage(img,0,0);
+
+  const type=$("vFormat").value;
+
+  const b=await makeBlob(
+   canvas,
+   type,
+   +$("vQuality").value
+  );
+
+  show("convertPreview",canvas);
+
+  let ext="jpg";
+
+  if(type==="image/png")ext="png";
+  if(type==="image/webp")ext="webp";
+
+  save(
+   "convert",
+   b,
+   `sawho-converted.${ext}`
+  );
+
+  $("convertStatus").textContent=
+   `Converted to ${ext.toUpperCase()} successfully.`;
+
+ }
+ catch(e){
+  $("convertStatus").textContent=e.message;
+ }
+};
+
+$("convertDownload").onclick=()=>download("convert");
+
+</script>
+
+</body>
+</html>
